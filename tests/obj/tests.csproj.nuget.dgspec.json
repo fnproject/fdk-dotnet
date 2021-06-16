@@ -1,0 +1,151 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/bhashkarjya/FDK/tests/tests.csproj": {}
+  },
+  "projects": {
+    "/home/bhashkarjya/FDK/FDK/FDK.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/bhashkarjya/FDK/FDK/FDK.csproj",
+        "projectName": "FDK",
+        "projectPath": "/home/bhashkarjya/FDK/FDK/FDK.csproj",
+        "packagesPath": "/home/bhashkarjya/.nuget/packages/",
+        "outputPath": "/home/bhashkarjya/FDK/FDK/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/bhashkarjya/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Mono.Posix.NETStandard": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.410/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/bhashkarjya/FDK/tests/tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/bhashkarjya/FDK/tests/tests.csproj",
+        "projectName": "tests",
+        "projectPath": "/home/bhashkarjya/FDK/tests/tests.csproj",
+        "packagesPath": "/home/bhashkarjya/.nuget/packages/",
+        "outputPath": "/home/bhashkarjya/FDK/tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/bhashkarjya/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "/home/bhashkarjya/FDK/FDK/FDK.csproj": {
+                "projectPath": "/home/bhashkarjya/FDK/FDK/FDK.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
+            "NSubstitute": {
+              "target": "Package",
+              "version": "[4.2.2, )"
+            },
+            "NSubstitute.Analyzers.CSharp": {
+              "target": "Package",
+              "version": "[1.0.14, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.410/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
