@@ -7,7 +7,7 @@ using System;
 
 namespace Fnproject.Fn.Fdk
 {
-    public class Startup<T, S> where T : notnull, new() where S : notnull, new()
+    public class Startup<T, S> where T : notnull where S : notnull
     {
         public static Func<IContext, T, S> userFunc;
 

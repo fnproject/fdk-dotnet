@@ -3,13 +3,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Headers;
 
 namespace Fnproject.Fn.Fdk
 {
     public class Middleware<T, S>
-        where T : notnull, new()
-        where S : notnull, new()
+        where T : notnull
+        where S : notnull
     {
         public static Func<IContext, T, S> userFunc;
         private readonly RequestDelegate _next;
@@ -25,43 +24,14 @@ namespace Fnproject.Fn.Fdk
             try
             {
                 var requestContext = new Context(context.Request.Headers);
-
-                T input = new T();
-
-                if (typeof(IInputCoercible<T>).IsAssignableFrom(typeof(T)))
-                {
-                    StreamReader reader = new StreamReader(context.Request.Body, encoding: System.Text.Encoding.UTF8);
-                    var rawBodyString = await reader.ReadToEndAsync();
-                    MethodInfo method = typeof(T).GetMethod("Coerce");
-                    input = (T)method.Invoke(input, new object[] { rawBodyString });
-                }
-                else
-                {
-                    try
-                    {
-                        input = await System.Text.Json.JsonSerializer.DeserializeAsync<T>(context.Request.Body);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Failed to deserialize JSON: {0}", e.Message);
-                    }
-                }
-
+                StreamReader reader = new StreamReader(context.Request.Body, encoding: System.Text.Encoding.UTF8);
+                var rawBodyString = await reader.ReadToEndAsync();
                 context.Request.Body.Close();
 
+                T input = InputCoercion<T>.Coerce(rawBodyString);
                 S output = userFunc(requestContext, input);
 
-                string responseBodyString = "";
-
-                if (typeof(IOutputCoercible<S>).IsAssignableFrom(typeof(S)))
-                {
-                    var userOutputCoercion = (IOutputCoercible<S>)output;
-                    responseBodyString = userOutputCoercion.Coerce(output);
-                }
-                else
-                {
-                    responseBodyString = System.Text.Json.JsonSerializer.Serialize<S>(output);
-                }
+                string responseBodyString = OutputCoercion<S>.Coerce(output);
 
                 foreach (var entry in requestContext.ResponseHeaders())
                     context.Response.Headers.Add(entry.Key, entry.Value);

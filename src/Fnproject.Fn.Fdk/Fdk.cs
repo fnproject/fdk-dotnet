@@ -8,8 +8,8 @@ namespace Fnproject.Fn.Fdk
         private Fdk() { }
 
         public static void Handle<T, S>(Func<IContext, T, S> userFunc)
-                where T : notnull, new()
-                where S : notnull, new()
+                where T : notnull
+                where S : notnull
         {
             Server server = new Server();
             server.Run(userFunc);

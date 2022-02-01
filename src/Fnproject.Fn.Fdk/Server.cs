@@ -42,8 +42,8 @@ namespace Fnproject.Fn.Fdk
         }
 
         private IHost prepareServer<T, S>(Func<IContext, T, S> userFunc)
-            where T : notnull, new()
-            where S : notnull, new()
+            where T : notnull
+            where S : notnull
         {
             Startup<T, S>.userFunc = userFunc;
 
@@ -94,8 +94,8 @@ namespace Fnproject.Fn.Fdk
         }
 
         public void Run<T, S>(Func<IContext, T, S> userFunc)
-            where T : notnull, new()
-            where S : notnull, new()
+            where T : notnull
+            where S : notnull
         {
 
             var server = this.prepareServer(userFunc);

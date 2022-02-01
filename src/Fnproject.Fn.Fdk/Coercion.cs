@@ -3,7 +3,8 @@ namespace Fnproject.Fn.Fdk {
         T Coerce(string rawBody);
     }
 
-    public interface IOutputCoercible<T> {
-        string Coerce(T t);
+    public interface IOutputCoercible {
+        string Coerce();
     }
 }
+
