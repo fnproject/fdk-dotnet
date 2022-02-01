@@ -31,7 +31,7 @@ namespace Fnproject.Fn.Fdk
                 T input = InputCoercion<T>.Coerce(rawBodyString);
                 S output = userFunc(requestContext, input);
 
-                string responseBodyString = OutputCoercion<S>.Coerce(output);
+                string responseBodyString = OutputCoercion<S>.Coerce(output);;
 
                 foreach (var entry in requestContext.ResponseHeaders())
                     context.Response.Headers.Add(entry.Key, entry.Value);
