@@ -1,6 +1,6 @@
 namespace Fnproject.Fn.Fdk {
-    public interface IInputCoercible<T> {
-        T Coerce(string rawBody);
+    public interface IInputCoercible {
+        object Coerce(string rawBody);
     }
 
     public interface IOutputCoercible {

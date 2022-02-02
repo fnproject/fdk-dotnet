@@ -3,7 +3,28 @@ using System.Reflection;
 using System.Text;
 
 namespace Fnproject.Fn.Fdk {
-  internal class InputCoercion<T> 
+  internal class InputCoercion 
+  {
+    private static object CoerceBuiltins(string input, Type t) {
+        if(t == typeof(String)) {
+          return (object) input;
+        } else if (t == typeof(Byte[])) {
+          return (object) Encoding.UTF8.GetBytes(input);
+        } else {
+          return (object) System.Text.Json.JsonSerializer.Deserialize(input, t);
+        }
+    }
+    public static object Coerce(string input, Type t) {
+      if (typeof(IInputCoercible).IsAssignableFrom(t)) {
+        var instance = Activator.CreateInstance(t);
+        MethodInfo method = t.GetMethod("Coerce");
+        return method.Invoke(instance, new object[] { input });
+      } else {
+        return CoerceBuiltins(input, t);
+      }
+  }
+
+  internal class OldInputCoercion<T> 
         where T : notnull
   {
     private static T CoerceBuiltins(string input) {
@@ -17,15 +38,6 @@ namespace Fnproject.Fn.Fdk {
           return System.Text.Json.JsonSerializer.Deserialize<T>(input);
         }
     }
-    public static T Coerce(string input) {
-      if (typeof(IInputCoercible<T>).IsAssignableFrom(typeof(T))) {
-        var inputType = typeof(T);
-        var instance = Activator.CreateInstance(inputType);
-        MethodInfo method = typeof(T).GetMethod("Coerce");
-        return (T) method.Invoke(instance, new object[] { input });
-      } else {
-        return CoerceBuiltins(input);
-      }
     }
   }
 }

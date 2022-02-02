@@ -1,9 +1,12 @@
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using Microsoft.AspNetCore.Hosting;
 using Mono.Unix.Native;
 using System;
 using System.IO;
-using System.Threading;
+using System.Reflection;
 
 namespace Fnproject.Fn.Fdk
 {
@@ -41,26 +44,6 @@ namespace Fnproject.Fn.Fdk
             PHONY_SOCKET_PATH = symlinkSocketPath;
         }
 
-        private IHost prepareServer<T, S>(Func<IContext, T, S> userFunc)
-            where T : notnull
-            where S : notnull
-        {
-            Startup<T, S>.userFunc = userFunc;
-
-            return Host.CreateDefaultBuilder()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup<T, S>>()
-                    .UseKestrel(opt =>
-                    {
-                        DeleteStaleSockets();
-                        opt.ListenUnixSocket(PHONY_SOCKET_PATH);
-                    });
-                })
-              .Build();
-
-        }
-
         internal static void SocketPermissions(string phonySock, string realSock)
         {
             if (Syscall.chmod(
@@ -93,13 +76,26 @@ namespace Fnproject.Fn.Fdk
 
         }
 
-        public void Run<T, S>(Func<IContext, T, S> userFunc)
-            where T : notnull
-            where S : notnull
+        private IHost newPrepareServer()
         {
+          return Host.CreateDefaultBuilder()
+              .ConfigureWebHostDefaults(webBuilder =>
+              {
+                  webBuilder
+                  .UseStartup<Startup>()
+                  .UseKestrel(opt =>
+                  {
+                      DeleteStaleSockets();
+                      opt.ListenUnixSocket(PHONY_SOCKET_PATH);
+                  });
+              })
+            .Build();
 
-            var server = this.prepareServer(userFunc);
-            server.Run();
+        }
+
+        public void Run() {
+          var server = this.newPrepareServer();
+          server.Run();
         }
     }
 }
