@@ -75,6 +75,11 @@ namespace Fnproject.Fn.Fdk
         {
             return headers;
         }
+
+        public string ConfigValueByKey(string key) {
+          return Context.config[key] != null ? (string) Context.config[key] : "";
+        }
+
         public IDictionary Config()
         {
             return Context.config;

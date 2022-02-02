@@ -14,6 +14,7 @@ namespace Fnproject.Fn.Fdk
         string RequestMethod();
         IHeaderDictionary Headers();
         IDictionary Config();
+        string ConfigValueByKey(string key);
         void AddHeader(string key, string value);
         void SetStatus(int statusCode);
 
