@@ -1,4 +1,4 @@
-using Fnproject.Fn.Fdk;
+using Fnproject.Fn.Fdk.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Extensions.Primitives;
@@ -28,7 +28,7 @@ namespace Fnproject.Fn.Fdk.Tests
             headers.Add("Fn-Http-H-Fn-Call-Id", CALL_ID);
             headers.Add("A-dropped-header", "any-val");
 
-            IContext ctx = new Fnproject.Fn.Fdk.Context(headers);
+            IHTTPContext ctx = new Fnproject.Fn.Fdk.HTTPContext(headers);
 
             Assert.True(ctx.Headers()["Content-Type"] == REQ_CONTENT_TYPE, "Content type check");
             Assert.True(ctx.AppID() == APP_ID, "App ID check");

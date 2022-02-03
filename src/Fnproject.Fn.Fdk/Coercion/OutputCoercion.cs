@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Fnproject.Fn.Fdk {
+namespace Fnproject.Fn.Fdk.Coercion {
   internal class OutputCoercion
   {
     private static string coerceBuiltins(object input) {
@@ -16,7 +16,7 @@ namespace Fnproject.Fn.Fdk {
         }
     }
 
-    public static string Coerce(object input) {
+    internal static string Coerce(object input) {
       if (typeof(IOutputCoercible).IsAssignableFrom(Function.Method.ReturnType)) {
         return ((IOutputCoercible) input).Coerce();
       } else {

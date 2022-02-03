@@ -1,4 +1,4 @@
-namespace Fnproject.Fn.Fdk {
+namespace Fnproject.Fn.Fdk.Coercion {
     public interface IInputCoercible {
         object Coerce(string rawBody);
     }

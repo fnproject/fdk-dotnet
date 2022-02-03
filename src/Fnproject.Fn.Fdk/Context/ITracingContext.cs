@@ -1,4 +1,4 @@
-namespace Fnproject.Fn.Fdk
+namespace Fnproject.Fn.Fdk.Context
 {
     public interface ITracingContext
     {
