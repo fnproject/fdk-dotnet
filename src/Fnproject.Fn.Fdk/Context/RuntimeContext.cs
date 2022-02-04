@@ -23,7 +23,11 @@ namespace Fnproject.Fn.Fdk.Context
             fnID = RuntimeContext.config["FN_FN_ID"] as string;
             fnName = RuntimeContext.config["FN_FN_NAME"] as string;
             callID = reqHeaders["Fn-Call-Id"];
-            deadline = DateTime.Parse(reqHeaders["FN_DEADLINE"]);
+            if (string.IsNullOrEmpty(reqHeaders["FN_DEADLINE"])) {
+              deadline = DateTime.Now.Add(TimeSpan.FromDays(1));
+            } else {
+              deadline = DateTime.Parse(reqHeaders["FN_DEADLINE"]);
+            }
             tracingContext = new TracingContext(RuntimeContext.config, reqHeaders);
         }
         public string AppID()

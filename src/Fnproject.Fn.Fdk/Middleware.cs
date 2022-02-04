@@ -17,6 +17,13 @@ namespace Fnproject.Fn.Fdk
             _next = next;
         }
 
+        private object prepareFunctionContext(IHTTPContext ctx) {
+            if(Function.ContextType == typeof(IRuntimeContext)) {
+              return ctx.RuntimeContext();
+            }
+            return ctx;
+        }
+
         private object[] prepareArgs(IHTTPContext ctx, string requestBody) {
           var parameters = Function.Method.GetParameters();
           object[] args;
@@ -27,18 +34,14 @@ namespace Fnproject.Fn.Fdk
             case 1:
               args = new object[1];
               if(Function.ContextParameterIndex != -1) {
-                if(Function.ClassType == typeof(IHTTPContext)) args[0] = ctx;
-                else args[0] = ctx.RuntimeContext();
+                args[0] = prepareFunctionContext(ctx);
               } else {
                 args[0] = InputCoercion.Coerce(requestBody, parameters[0].ParameterType);
               }
               break;
             default:
               args = new object[2];
-              if(Function.ClassType == typeof(IHTTPContext)) 
-                args[Function.ContextParameterIndex] = ctx;
-              else 
-                args[Function.ContextParameterIndex] = ctx.RuntimeContext();
+              args[Function.ContextParameterIndex] = prepareFunctionContext(ctx);
               args[Function.DataParameterIndex] = InputCoercion.Coerce(requestBody, 
                   parameters[Function.DataParameterIndex].ParameterType);
               break;

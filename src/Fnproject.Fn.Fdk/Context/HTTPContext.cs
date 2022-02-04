@@ -1,6 +1,8 @@
 using System;
 using Microsoft.AspNetCore.Http;
 
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Fnproject.Fn.Fdk.Tests")]
 namespace Fnproject.Fn.Fdk.Context
 {
     internal class HTTPContext : IHTTPContext
@@ -20,10 +22,7 @@ namespace Fnproject.Fn.Fdk.Context
 
         public HTTPContext(IHeaderDictionary reqHeaders, IQueryCollection query)
         {
-            runtimeContext = new RuntimeContext(reqHeaders);
             headers = new HeaderDictionary();
-            responseHeaders = new HeaderDictionary();
-            this.queryParams = query;
 
             foreach (string key in reqHeaders.Keys)
             {
@@ -38,6 +37,9 @@ namespace Fnproject.Fn.Fdk.Context
                 }
                 reqHeaders.Remove(key);
             }
+            runtimeContext = new RuntimeContext(headers);
+            responseHeaders = new HeaderDictionary();
+            this.queryParams = query;
         }
 
         public IRuntimeContext RuntimeContext()
