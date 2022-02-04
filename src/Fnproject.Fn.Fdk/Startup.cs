@@ -24,8 +24,6 @@ namespace Fnproject.Fn.Fdk
 
       public void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifetime)
       {
-          // Middleware<T, S>.userFunc = userFunc;
-
           app.UseRouting();
 
           // Middleware for Logging
