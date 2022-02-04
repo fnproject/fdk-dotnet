@@ -74,10 +74,7 @@ namespace Fnproject.Fn.Fdk.Context {
                 serviceName = string.Format("{0}::{1}", config["FN_APP_NAME"],
                     config["FN_FN_NAME"]).ToLower();
 
-                if (!bool.TryParse(headers[TRACING_SAMPLED_HEADER].ToString(), out sampled))
-                {
-                    Console.WriteLine("Failed to parse 'sampled' in tracing context");
-                }
+                bool.TryParse(headers[TRACING_SAMPLED_HEADER].ToString(), out sampled);
             }
         }
     }

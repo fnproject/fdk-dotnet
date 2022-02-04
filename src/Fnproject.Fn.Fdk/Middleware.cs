@@ -69,8 +69,6 @@ namespace Fnproject.Fn.Fdk
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
                 context.Response.Headers.Add("Fn-Fdk-Runtime",
                     String.Format("dotnet/{0}", System.Environment.Version.ToString()));
                 context.Response.Headers.Add("Fn-Fdk-Version",
@@ -80,6 +78,7 @@ namespace Fnproject.Fn.Fdk
 
                 // Writing response with empty body
                 await context.Response.WriteAsync("");
+                throw e;
             }
         }
     }

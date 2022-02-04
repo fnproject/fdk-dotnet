@@ -95,15 +95,7 @@ namespace Fnproject.Fn.Fdk
 
         public static object Invoke(object[] args)
         {
-            try
-            {
-                return UserFunctionData.invokeStrategy.Invoke(args);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed to invoke: {0}", e);
-                return null;
-            }
+            return UserFunctionData.invokeStrategy.Invoke(args);
         }
 
         private static void assignContext(ParameterInfo parameter, int index)
@@ -173,12 +165,10 @@ namespace Fnproject.Fn.Fdk
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-            }
-            finally
-            {
                 rwl.ReleaseWriterLock();
+                throw e;
             }
+            rwl.ReleaseWriterLock();
         }
     }
 }
