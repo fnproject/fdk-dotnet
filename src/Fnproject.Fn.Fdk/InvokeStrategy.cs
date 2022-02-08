@@ -7,6 +7,7 @@ namespace Fnproject.Fn.Fdk
     sealed internal class InvokeStrategyFactory
     {
         private InvokeStrategyFactory() { }
+
         internal static IInvokeStrategy Create(MethodInfo method, Type classType)
         {
             if (method.IsStatic)
@@ -33,6 +34,7 @@ namespace Fnproject.Fn.Fdk
             }
         }
     }
+
     internal interface IInvokeStrategy
     {
         object Invoke(object[] args);
@@ -41,10 +43,12 @@ namespace Fnproject.Fn.Fdk
     internal class InvokeStatic : IInvokeStrategy
     {
         private readonly MethodInfo method;
+
         public object Invoke(object[] args)
         {
             return method.Invoke(null, args);
         }
+
         public InvokeStatic(MethodInfo method)
         {
             this.method = method;
@@ -55,6 +59,7 @@ namespace Fnproject.Fn.Fdk
     {
         private readonly MethodInfo method;
         private readonly object instance;
+
         public object Invoke(object[] args)
         {
             // Add try catch
@@ -63,6 +68,7 @@ namespace Fnproject.Fn.Fdk
             var resultProperty = task.GetType().GetProperty("Result");
             return resultProperty.GetValue(task);
         }
+
         public InvokeNonStaticAsync(MethodInfo method, Type classType)
         {
             this.method = method;
@@ -74,10 +80,12 @@ namespace Fnproject.Fn.Fdk
     {
         private readonly MethodInfo method;
         private readonly object instance;
+
         public object Invoke(object[] args)
         {
             return method.Invoke(instance, args);
         }
+
         public InvokeNonStatic(MethodInfo method, Type classType)
         {
             this.method = method;
@@ -96,6 +104,7 @@ namespace Fnproject.Fn.Fdk
             var resultProperty = task.GetType().GetProperty("Result");
             return resultProperty.GetValue(task);
         }
+
         public InvokeStaticAsync(MethodInfo method)
         {
             this.method = method;

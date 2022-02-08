@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using System.Threading.Tasks;
 
 using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Fnproject.Fn.Fdk.Tests")]
@@ -10,9 +8,13 @@ namespace Fnproject.Fn.Fdk.Coercion
     {
         private static string coerceBuiltins(object input, Type t)
         {
-            if (t == typeof(String))
+            if (t == typeof(void))
             {
-                return (string)(object)input;
+                return string.Empty;
+            }
+            else if (t == typeof(String))
+            {
+                return (string)input;
             }
             else if (t == typeof(Byte[]))
             {
@@ -32,8 +34,7 @@ namespace Fnproject.Fn.Fdk.Coercion
             }
             else
             {
-                if (t != typeof(void)) return coerceBuiltins(input, t);
-                else return "";
+                return coerceBuiltins(input, t);
             }
         }
     }

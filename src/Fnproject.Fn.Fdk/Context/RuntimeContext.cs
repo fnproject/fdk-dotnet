@@ -14,25 +14,25 @@ namespace Fnproject.Fn.Fdk.Context
         private string fnIntent;
 
         private DateTime deadline;
-        private readonly static IDictionary config = System.Environment.GetEnvironmentVariables();
+        private static readonly IDictionary config = System.Environment.GetEnvironmentVariables();
         private ITracingContext tracingContext;
 
         public RuntimeContext(IHeaderDictionary reqHeaders)
         {
-            appID = RuntimeContext.config["FN_APP_ID"] as string;
-            appName = RuntimeContext.config["FN_APP_NAME"] as string;
-            fnID = RuntimeContext.config["FN_FN_ID"] as string;
-            fnName = RuntimeContext.config["FN_FN_NAME"] as string;
-            callID = reqHeaders["Fn-Call-Id"];
-            fnIntent = reqHeaders["Fn-Intent"];
+            appID = RuntimeContext.config[Constants.FN_APP_ID] as string;
+            appName = RuntimeContext.config[Constants.FN_APP_NAME] as string;
+            fnID = RuntimeContext.config[Constants.FN_FN_ID] as string;
+            fnName = RuntimeContext.config[Constants.FN_FN_NAME] as string;
+            callID = reqHeaders[Constants.FN_CALL_ID_HEADER];
+            fnIntent = reqHeaders[Constants.FN_INTENT_HEADER];
 
-            if (string.IsNullOrEmpty(reqHeaders["FN_DEADLINE"]))
+            if (string.IsNullOrEmpty(reqHeaders[Constants.FN_DEADLINE_HEADER]))
             {
                 deadline = DateTime.Now.Add(TimeSpan.FromDays(1));
             }
             else
             {
-                deadline = DateTime.Parse(reqHeaders["FN_DEADLINE"]);
+                deadline = DateTime.Parse(reqHeaders[Constants.FN_DEADLINE_HEADER]);
             }
             tracingContext = new TracingContext(RuntimeContext.config, reqHeaders);
         }
@@ -66,7 +66,7 @@ namespace Fnproject.Fn.Fdk.Context
         }
         public string ConfigValueByKey(string key)
         {
-            return RuntimeContext.config[key] != null ? (string)RuntimeContext.config[key] : "";
+            return RuntimeContext.config[key] != null ? (string)RuntimeContext.config[key] : string.Empty;
         }
 
         public IDictionary Config()

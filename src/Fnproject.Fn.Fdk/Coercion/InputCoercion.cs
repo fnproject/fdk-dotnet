@@ -28,7 +28,7 @@ namespace Fnproject.Fn.Fdk.Coercion
             if (typeof(IInputCoercible).IsAssignableFrom(t))
             {
                 var instance = Activator.CreateInstance(t);
-                MethodInfo method = t.GetMethod("Coerce");
+                MethodInfo method = t.GetMethod(Constants.COERCION_INTERFACE_METHOD);
                 return method.Invoke(instance, new object[] { input });
             }
             else
@@ -38,3 +38,4 @@ namespace Fnproject.Fn.Fdk.Coercion
         }
     }
 }
+

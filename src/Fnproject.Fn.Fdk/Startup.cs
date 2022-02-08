@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Fnproject.Fn.Fdk
 {
-    public class Startup
+    internal class Startup
     {
 
         public void ConfigureServices(IServiceCollection services)
@@ -35,7 +35,6 @@ namespace Fnproject.Fn.Fdk
             });
 
             app.UseMiddleware<Middleware>();
-
 
             applicationLifetime.ApplicationStarted.Register(() =>
             {

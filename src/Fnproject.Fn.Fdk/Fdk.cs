@@ -6,19 +6,21 @@ namespace Fnproject.Fn.Fdk
 {
     public class Fdk
     {
-        const char TRIGGER_DELIMITER = ':';
 
-        // Create an isvalid func
+
         private Fdk() { }
 
         private static bool invalidTrigger(string[] triggerSegments)
         {
-            return triggerSegments.Length != 3 ||
-              triggerSegments.Aggregate(false, (result, segment) => result |= segment.Length == 0);
+            return triggerSegments.Length != Constants.NUMBER_OF_TRIGGER_SEGMENTS ||
+              triggerSegments.Aggregate(false,
+                (result, segment) => result |= string.IsNullOrEmpty(segment)
+              );
         }
+
         public static void Handle(string trigger)
         {
-            string[] triggerSegments = trigger.Split(TRIGGER_DELIMITER);
+            string[] triggerSegments = trigger.Split(Constants.TRIGGER_DELIMITER);
             if (invalidTrigger(triggerSegments))
             {
                 throw new ArgumentException("Invalid trigger point: {0}", trigger);

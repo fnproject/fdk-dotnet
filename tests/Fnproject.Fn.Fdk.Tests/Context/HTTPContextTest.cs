@@ -1,7 +1,7 @@
-using System;
 using Fnproject.Fn.Fdk.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -47,8 +47,8 @@ namespace Fnproject.Fn.Fdk.Tests
             const string REQUEST_METHOD = "POST";
 
             var headers = new HeaderDictionary();
-            headers.Add("Fn-Http-Request-Url", REQUEST_URL);
-            headers.Add("Fn-Http-Method", REQUEST_METHOD);
+            headers.Add(Constants.FN_HTTP_REQUEST_URL_HEADER, REQUEST_URL);
+            headers.Add(Constants.FN_HTTP_REQUEST_METHOD_HEADER, REQUEST_METHOD);
 
             var queryDict = new Dictionary<string, StringValues>();
             queryDict.Add("q", "test");

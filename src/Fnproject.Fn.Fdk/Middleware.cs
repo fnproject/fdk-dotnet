@@ -1,13 +1,13 @@
+using Fnproject.Fn.Fdk.Context;
+using Fnproject.Fn.Fdk.Coercion;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Fnproject.Fn.Fdk.Context;
-using Fnproject.Fn.Fdk.Coercion;
 
 namespace Fnproject.Fn.Fdk
 {
-    public class Middleware
+    internal class Middleware
     {
         private readonly RequestDelegate _next;
 
@@ -77,15 +77,14 @@ namespace Fnproject.Fn.Fdk
             }
             catch (Exception e)
             {
-                context.Response.Headers.Add("Fn-Fdk-Runtime",
+                context.Response.Headers.Add(Constants.FN_FDK_RUNTIME_HEADER,
                     String.Format("dotnet/{0}", System.Environment.Version.ToString()));
-                context.Response.Headers.Add("Fn-Fdk-Version",
-                    String.Format("fdk-csharp/{0}", Version.Get()));
-                context.Response.Headers.Add("Fn-Fdk-Status", 502.ToString());
-                context.Response.StatusCode = 502;
+                context.Response.Headers.Add(Constants.FN_FDK_RUNTIME_HEADER,
+                    String.Format("fdk-dotnet/{0}", Version.Value));
+                context.Response.Headers.Add(Constants.FN_HTTP_STATUS_HEADER, 502.ToString());
+                context.Response.StatusCode = StatusCodes.Status502BadGateway;
 
-                // Writing response with empty body
-                await context.Response.WriteAsync("");
+                await context.Response.WriteAsync(string.Empty);
                 throw e;
             }
         }

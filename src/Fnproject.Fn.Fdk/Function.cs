@@ -18,14 +18,12 @@ namespace Fnproject.Fn.Fdk
             public static MethodInfo method;
             public static IInvokeStrategy invokeStrategy;
             public static Type contextType;
-            public static int dataArgPosition = UNASSIGNED_PARAM_INDEX;
-            public static int ctxArgPosition = UNASSIGNED_PARAM_INDEX;
+            public static int dataArgPosition = Constants.UNASSIGNED_PARAM_INDEX;
+            public static int ctxArgPosition = Constants.UNASSIGNED_PARAM_INDEX;
             private UserFunctionData() { }
         }
 
         private static ReaderWriterLock rwl = new ReaderWriterLock();
-        private static readonly int UNASSIGNED_PARAM_INDEX = -1;
-        private static readonly int MAX_ALLOWED_PARAMETERS = 2;
 
         public static int ContextParameterIndex
         {
@@ -118,6 +116,7 @@ namespace Fnproject.Fn.Fdk
             return typeof(IRuntimeContext).IsAssignableFrom(paramType) ||
                 typeof(IHTTPContext).IsAssignableFrom(paramType);
         }
+
         private static void assignParameters(ParameterInfo[] parameters)
         {
             for (int index = 0; index < parameters.Length; index++)
@@ -125,28 +124,29 @@ namespace Fnproject.Fn.Fdk
                 ParameterInfo parameter = parameters[index];
                 if (isContext(parameter))
                 {
-                    if (UserFunctionData.ctxArgPosition == UNASSIGNED_PARAM_INDEX)
+                    if (UserFunctionData.ctxArgPosition == Constants.UNASSIGNED_PARAM_INDEX)
                     {
                         assignContext(parameter, index);
                     }
                     else
                     {
-                        throw new InvalidOperationException("Function can contain maximum 1 context and 1 data argument");
+                        throw new InvalidOperationException("Function can contain maximum 1 context");
                     }
                 }
                 else
                 {
-                    if (UserFunctionData.dataArgPosition == UNASSIGNED_PARAM_INDEX)
+                    if (UserFunctionData.dataArgPosition == Constants.UNASSIGNED_PARAM_INDEX)
                     {
                         UserFunctionData.dataArgPosition = index;
                     }
                     else
                     {
-                        throw new InvalidOperationException("Function can contain maximum 1 context and 1 data argument");
+                        throw new InvalidOperationException("Function can contain maximum 1 data argument");
                     }
                 }
             }
         }
+
         internal static void Initialize(Type classType, MethodInfo method)
         {
             rwl.AcquireWriterLock(Timeout.Infinite);
@@ -162,7 +162,7 @@ namespace Fnproject.Fn.Fdk
                 UserFunctionData.invokeStrategy = InvokeStrategyFactory.Create(method, classType);
 
                 var parameters = method.GetParameters();
-                if (parameters.Length > MAX_ALLOWED_PARAMETERS)
+                if (parameters.Length > Constants.MAX_ALLOWED_USER_FN_PARAMETERS)
                 {
                     throw new ArgumentException("Function cannot contains more than 2 parameters");
                 }

@@ -1,21 +1,21 @@
 Third Party Attributions
 
 The following software (or subsets of the software) are dependencies
-of this product. They are identified by the Fn Project CSharp FDK module(s) that use
+of this product. They are identified by the Fn Project Dotnet FDK module(s) that use
 them.
 
 The first section ("Third Party Runtime Dependencies") contains dependencies
-that might be used at runtime by an Fn Project CSharp FDK application.
+that might be used at runtime by an Fn Project Dotnet FDK application.
 
 The second section ("Third Party Attributions for Examples, Tests, Builds, etc")
-contains dependencies that are used in examples and to test and build Fn Project CSharp FDK.
-They are likely not needed at runtime by an Fn Project CSharp FDK application.
+contains dependencies that are used in examples and to test and build Fn Project Dotnet FDK.
+They are likely not needed at runtime by an Fn Project Dotnet FDK application.
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 Third Party Runtime Dependencies
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-fdk-csharp is licensed under the Apache License, Version 2.0.
+fdk-dotnet is licensed under the Apache License, Version 2.0.
 License: A copy of the Apache License V2 is included at the end of this file.
 
 --------------------------------------------------------------------------------
@@ -52,6 +52,7 @@ SOFTWARE.
 --------------------------------------------------------------------------------
 These packages are part of ASP Net Core library and ASP Net SDK standard library
 System
+Microsoft.Net
 Microsoft.AspNetCore
 Microsoft.Extensions
 
@@ -85,8 +86,8 @@ SOFTWARE.
 Third Party Attributions for Examples, Tests, Builds, etc
 
 The following software (or subsets of the software) is used when building the
-Fn Project CSharp FDK, or in the examples and tests. They are generally not required by
-users of the Fn Project CSharp FDK and not required during runtime.
+Fn Project Dotnet FDK, or in the examples and tests. They are generally not required by
+users of the Fn Project Dotnet FDK and not required during runtime.
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 Xunit (https://github.com/xunit/xunit)

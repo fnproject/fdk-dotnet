@@ -12,18 +12,14 @@ namespace Fnproject.Fn.Fdk
         public static void Start(IHeaderDictionary headers)
         {
 
-            if (string.IsNullOrEmpty(Logger.framerName))
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(Logger.frameHeader))
+            if (string.IsNullOrEmpty(Logger.framerName) ||
+                string.IsNullOrEmpty(Logger.frameHeader))
             {
                 return;
             }
 
             string id = headers[Logger.frameHeader];
-            if (id.Length != 0)
+            if (!string.IsNullOrEmpty(id))
             {
                 Console.WriteLine("\n{0}={1}", Logger.frameHeader, id);
                 Console.Error.WriteLine("\n{0}={1}", Logger.frameHeader, id);

@@ -1,0 +1,15 @@
+ARG DOTNET_VERSION=latest
+FROM  fnproject/dotnet:${DOTNET_VERSION}-dev as build-stage
+ARG PKG_VERSION="1.0.0-SNAPSHOT"
+RUN echo $PKG_VERSION
+WORKDIR /function
+COPY . .
+RUN mkdir -p ./fdk-repo/
+RUN cp -r Fnproject.Fn.Fdk.${PKG_VERSION}.nupkg ./fdk-repo/ 
+
+RUN dotnet build -o ./out -c Release
+
+FROM fnproject/dotnet:${DOTNET_VERSION}
+WORKDIR /function
+COPY --from=build-stage /function/out .
+CMD ["dotnet", "temporary.dll"]

@@ -7,7 +7,7 @@ This project contains an implementation of FDK for C# running on dotnet runtime.
 https://www.nuget.org/packages/Fnproject.Fn.Fdk/
 
 #### Use the Handle function in library to handle user function
-```csharp
+```dotnet
 using Fnproject.Fn.Fdk;
 
 namespace example
