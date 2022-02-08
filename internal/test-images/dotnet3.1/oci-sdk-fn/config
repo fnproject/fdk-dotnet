@@ -1,0 +1,6 @@
+[DEFAULT]
+user=<username>
+fingerprint=<key fingerprint>
+tenancy=<tenancy>
+region=us-ashburn-1
+key_file=~/.oci/private.pem

@@ -14,25 +14,27 @@ namespace Fnproject.Fn.Fdk.Tests
         {
             const string REQ_CONTENT_TYPE = "text/plain";
             const string CALL_ID = "7-w-g-p-e-l-s-c";
-            const string FN_INTENT = "cloudevent";
+            string FN_INTENT = Constants.INTENT_HTTP_REQUEST;
             const string SINGLE_QUERY = "test-query-value";
             string[] MULTI_QUERY = new string[] { "val-1", "val-2" };
 
             var headers = new HeaderDictionary();
             headers.Add("Content-Type", REQ_CONTENT_TYPE);
             headers.Add("Fn-Intent", FN_INTENT);
-            headers.Add("Fn-Http-H-Fn-Call-Id", CALL_ID);
+            headers.Add("Fn-Call-Id", CALL_ID);
             headers.Add("A-dropped-header", "any-val");
-
 
             Dictionary<string, StringValues> query = new Dictionary<string, StringValues>();
             query.Add("test-query", SINGLE_QUERY);
             query.Add("test-query-multi", MULTI_QUERY);
 
-            IHTTPContext ctx = new HTTPContext(headers, new QueryCollection(query));
+            RuntimeContext runtimeContext = new RuntimeContext(headers);
+
+            IHTTPContext ctx = new HTTPContext(runtimeContext,
+                headers, new QueryCollection(query));
             Assert.Equal(REQ_CONTENT_TYPE, ctx.Headers()["Content-Type"]);
             Assert.Equal(FN_INTENT, ctx.RuntimeContext().FnIntent());
-            Assert.Equal(CALL_ID, ctx.RuntimeContext().CallID());
+            Assert.Equal(CALL_ID, ctx.RuntimeContext().CallId());
             Assert.True(ctx.Headers()["A-dropped-header"] == StringValues.Empty, "Garbage header check");
             Assert.Equal(SINGLE_QUERY, ctx.Query()["test-query"]);
             Assert.Equal(MULTI_QUERY, ctx.Query()["test-query-multi"].ToArray());
@@ -52,7 +54,10 @@ namespace Fnproject.Fn.Fdk.Tests
 
             var queryDict = new Dictionary<string, StringValues>();
             queryDict.Add("q", "test");
-            IHTTPContext ctx = new HTTPContext(headers, new QueryCollection(queryDict));
+
+            RuntimeContext runtimeContext = new RuntimeContext(headers);
+            IHTTPContext ctx = new HTTPContext(runtimeContext,
+                headers, new QueryCollection(queryDict));
 
             Assert.Equal(REQUEST_URL, ctx.RequestURL());
             Assert.Equal(REQUEST_METHOD, ctx.RequestMethod());
@@ -65,9 +70,9 @@ namespace Fnproject.Fn.Fdk.Tests
         {
             var headers = new HeaderDictionary();
 
-            // ResponseHeaders() is not available on IContext, as user doesn't need to read them.
-            HTTPContext ctx = new HTTPContext(headers, new QueryCollection(
-                new Dictionary<string, StringValues>()));
+            RuntimeContext runtimeContext = new RuntimeContext(headers);
+            HTTPContext ctx = new HTTPContext(runtimeContext, headers,
+                new QueryCollection(new Dictionary<string, StringValues>()));
 
             ctx.AddHeader("x-power-meter-says", "over-9000");
 
@@ -83,9 +88,9 @@ namespace Fnproject.Fn.Fdk.Tests
         {
             var headers = new HeaderDictionary();
 
-            // ResponseHeaders() is not available on IContext, as user doesn't need to read them.
-            HTTPContext ctx = new HTTPContext(headers, new QueryCollection(
-                new Dictionary<string, StringValues>()));
+            RuntimeContext runtimeContext = new RuntimeContext(headers);
+            HTTPContext ctx = new HTTPContext(runtimeContext, headers,
+                new QueryCollection(new Dictionary<string, StringValues>()));
 
             ctx.SetStatus(202);
 
@@ -100,9 +105,9 @@ namespace Fnproject.Fn.Fdk.Tests
         {
             var headers = new HeaderDictionary();
 
-            // ResponseHeaders() is not available on IContext, as user doesn't need to read them.
-            HTTPContext ctx = new HTTPContext(headers, new QueryCollection(
-                new Dictionary<string, StringValues>()));
+            RuntimeContext runtimeContext = new RuntimeContext(headers);
+            HTTPContext ctx = new HTTPContext(runtimeContext, headers,
+                new QueryCollection(new Dictionary<string, StringValues>()));
 
             var responseHeaders = ctx.ResponseHeaders();
 
@@ -114,10 +119,9 @@ namespace Fnproject.Fn.Fdk.Tests
         public void TestRuntimeAndVersion()
         {
             var headers = new HeaderDictionary();
-
-            // ResponseHeaders() is not available on IContext, as user doesn't need to read them.
-            HTTPContext ctx = new HTTPContext(headers, new QueryCollection(
-                new Dictionary<string, StringValues>()));
+            RuntimeContext runtimeContext = new RuntimeContext(headers);
+            HTTPContext ctx = new HTTPContext(runtimeContext, headers,
+                new QueryCollection(new Dictionary<string, StringValues>()));
 
             var responseHeaders = ctx.ResponseHeaders();
 

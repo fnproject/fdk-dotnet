@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Fnproject.Fn.Fdk
 {
-    sealed class Server
+    sealed internal class Server
     {
         internal static string SOCKET_PATH { get; private set; }
         internal static string PHONY_SOCKET_PATH { get; private set; }

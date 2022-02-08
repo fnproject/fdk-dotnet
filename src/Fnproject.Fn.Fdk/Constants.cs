@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Fnproject.Fn.Fdk.Tests")]
 namespace Fnproject.Fn.Fdk
 {
     sealed internal class Constants
@@ -29,11 +31,11 @@ namespace Fnproject.Fn.Fdk
         internal static readonly string TRACING_SAMPLED_HEADER = "X-B3-Sampled";
 
         // General constants
+        internal static readonly string INTENT_HTTP_REQUEST = "httprequest";
         internal static readonly string COERCION_INTERFACE_METHOD = "Coerce";
         internal static readonly int NUMBER_OF_TRIGGER_SEGMENTS = 3;
         internal static readonly char TRIGGER_DELIMITER = ':';
         internal static readonly int UNASSIGNED_PARAM_INDEX = -1;
         internal static readonly int MAX_ALLOWED_USER_FN_PARAMETERS = 2;
-        internal static readonly string ENABLED_STRING = "1";
     }
 }

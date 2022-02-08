@@ -6,25 +6,30 @@ namespace Fnproject.Fn.Fdk.Context
 {
     internal class RuntimeContext : IRuntimeContext
     {
-        private string appID;
+        private string appId;
         private string appName;
-        private string fnID;
+        private string fnId;
         private string fnName;
-        private string callID;
+        private string callId;
         private string fnIntent;
 
         private DateTime deadline;
-        private static readonly IDictionary config = System.Environment.GetEnvironmentVariables();
+        public static readonly IDictionary config = System.Environment.GetEnvironmentVariables();
         private ITracingContext tracingContext;
+
+        private string valueOrEmpty(string value)
+        {
+            return string.IsNullOrEmpty(value) ? string.Empty : value;
+        }
 
         public RuntimeContext(IHeaderDictionary reqHeaders)
         {
-            appID = RuntimeContext.config[Constants.FN_APP_ID] as string;
-            appName = RuntimeContext.config[Constants.FN_APP_NAME] as string;
-            fnID = RuntimeContext.config[Constants.FN_FN_ID] as string;
-            fnName = RuntimeContext.config[Constants.FN_FN_NAME] as string;
-            callID = reqHeaders[Constants.FN_CALL_ID_HEADER];
-            fnIntent = reqHeaders[Constants.FN_INTENT_HEADER];
+            appId = valueOrEmpty(RuntimeContext.config[Constants.FN_APP_ID] as string);
+            appName = valueOrEmpty(RuntimeContext.config[Constants.FN_APP_NAME] as string);
+            fnId = valueOrEmpty(RuntimeContext.config[Constants.FN_FN_ID] as string);
+            fnName = valueOrEmpty(RuntimeContext.config[Constants.FN_FN_NAME] as string);
+            callId = valueOrEmpty(reqHeaders[Constants.FN_CALL_ID_HEADER]);
+            fnIntent = valueOrEmpty(reqHeaders[Constants.FN_INTENT_HEADER]);
 
             if (string.IsNullOrEmpty(reqHeaders[Constants.FN_DEADLINE_HEADER]))
             {
@@ -36,13 +41,13 @@ namespace Fnproject.Fn.Fdk.Context
             }
             tracingContext = new TracingContext(RuntimeContext.config, reqHeaders);
         }
-        public string AppID()
+        public string AppId()
         {
-            return appID;
+            return appId;
         }
-        public string FunctionID()
+        public string FunctionId()
         {
-            return fnID;
+            return fnId;
         }
         public string AppName()
         {
@@ -52,9 +57,9 @@ namespace Fnproject.Fn.Fdk.Context
         {
             return fnName;
         }
-        public string CallID()
+        public string CallId()
         {
-            return callID;
+            return callId;
         }
         public string FnIntent()
         {
@@ -66,13 +71,14 @@ namespace Fnproject.Fn.Fdk.Context
         }
         public string ConfigValueByKey(string key)
         {
-            return RuntimeContext.config[key] != null ? (string)RuntimeContext.config[key] : string.Empty;
+            return valueOrEmpty(RuntimeContext.config[key] as string);
         }
 
         public IDictionary Config()
         {
             return RuntimeContext.config;
         }
+
         public ITracingContext TracingContext()
         {
             return tracingContext;

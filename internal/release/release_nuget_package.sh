@@ -14,18 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+set -exuo pipefail
+set -ex
 
-
-set -xeuo pipefail
-
-if [[ -z ${1:-} ]];then
-  echo "Please supply dotnet version as argument to build image." >> /dev/stderr
-  exit 2
-fi
-
-dotnetversion=$1
-fdk_version=$2
-
-echo $dotnetversion
-pushd internal/images/build/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
-pushd internal/images/runtime/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version} . && popd
+# Release the fdk nuget package to nuget.org
+dotnet nuget push ./internal/out/Fnproject.Fn.Fdk.${BUILD_VERSION}.nupkg --api-key $NUGET_PKG_API_KEY --source https://api.nuget.org/v3/index.json 

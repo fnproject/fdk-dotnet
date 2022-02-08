@@ -9,7 +9,7 @@ namespace Fnproject.Fn.Fdk
         public static string Value
         {
             get { return version; }
-            private set { }
+            private set {}
         }
     }
 }

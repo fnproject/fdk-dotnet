@@ -14,18 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+set -exuo pipefail
+set -ex
 
-
-set -xeuo pipefail
-
-if [[ -z ${1:-} ]];then
-  echo "Please supply dotnet version as argument to build image." >> /dev/stderr
-  exit 2
+if [[ "$BUILD_VERSION" == *"SNAPSHOT"* ]]; then
+  echo "Releases will not be performed for snapshot versions, aborting."
+  exit 0
 fi
 
-dotnetversion=$1
-fdk_version=$2
+RUN_TYPE=${RUN_TYPE:-dry-run}
+export RUN_TYPE
 
-echo $dotnetversion
-pushd internal/images/build/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
-pushd internal/images/runtime/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version} . && popd
+
+if [ "${RUN_TYPE}" = "release" ]; then
+# invoke the shell script which pushes the nuget package to nuget.org
+    docker run --rm -v $PWD:/build -w /build --env BUILD_VERSION=${BUILD_VERSION} --env NUGET_PKG_API_KEY=${NUGET_PKG_API_KEY} fdk_dotnet_build_image ./internal/release/release_nuget_package.sh
+fi

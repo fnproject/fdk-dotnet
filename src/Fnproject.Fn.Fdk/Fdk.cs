@@ -4,10 +4,12 @@ using System.Reflection;
 
 namespace Fnproject.Fn.Fdk
 {
+    /// <summary>
+    /// Fdk is the entrypoint in the code. Fdk provides Handle() API
+    /// which helps running the function.
+    /// </summary>
     public class Fdk
     {
-
-
         private Fdk() { }
 
         private static bool invalidTrigger(string[] triggerSegments)
@@ -18,6 +20,14 @@ namespace Fnproject.Fn.Fdk
               );
         }
 
+        /// <summary>
+        /// Handle() is the entrypoint into the FDK. Handle() expects a trigger 
+        /// point in the form "namespace:class:function", this trigger will be 
+        /// executed upon running the function in cloud.
+        /// </summary>
+        /// <param name="trigger">
+        /// Trigger should be in the form "namespace:class:function"
+        /// </param>
         public static void Handle(string trigger)
         {
             string[] triggerSegments = trigger.Split(Constants.TRIGGER_DELIMITER);
@@ -30,21 +40,7 @@ namespace Fnproject.Fn.Fdk
             string userNamespaceAndClass = string.Format("{0}.{1}", userNamespace, userClass);
             string userMethodName = triggerSegments[2];
 
-            Type classType = null;
-
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            Assembly[] assems = currentDomain.GetAssemblies();
-            foreach (Assembly asm in assems)
-            {
-                foreach (Type type in asm.GetTypes())
-                {
-                    if (type.Namespace == userNamespace && type.Name == userClass)
-                        classType = type;
-                }
-            }
-
-            if (classType == null)
-                throw new ArgumentException("Class not found in loaded assemblies: {0}", userNamespaceAndClass);
+            Type classType = Assembly.GetCallingAssembly().GetType(userNamespaceAndClass, true);
 
             MethodInfo method = classType.GetMethod(userMethodName, BindingFlags.Static | BindingFlags.Public);
             if (method == null)

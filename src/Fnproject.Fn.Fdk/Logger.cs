@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Fnproject.Fn.Fdk
 {
-    public static class Logger
+    sealed internal class Logger
     {
         readonly private static string framerName = Environment.GetEnvironmentVariable("FN_LOGFRAME_NAME");
         readonly private static string frameHeader = Environment.GetEnvironmentVariable("FN_LOGFRAME_HDR");

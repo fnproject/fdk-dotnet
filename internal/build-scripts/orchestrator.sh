@@ -39,9 +39,9 @@ export LOCAL
   docker run --rm -v $PWD:/build -w /build fdk_dotnet_test_build_image ./internal/build-scripts/execute_unit_tests.sh
 )
 
-#Build base fdk build and runtime docker images
+# Build base fdk build and runtime docker images
 (
-  source internal/build-scripts/build_base_images.sh
+  source internal/build-scripts/build_base_images.sh $BUILD_VERSION
 )
 
 #Build the integration test docker images
@@ -49,7 +49,7 @@ export LOCAL
   source internal/build-scripts/build_test_images.sh
 )
 
-#Cleanup
-#(
+# Cleanup
+# (
 #  source internal/build-scripts/cleanup_nuget_pkg.sh
-#)
+# )

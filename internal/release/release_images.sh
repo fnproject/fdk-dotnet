@@ -14,18 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+set -ex
 
-
-set -xeuo pipefail
-
-if [[ -z ${1:-} ]];then
-  echo "Please supply dotnet version as argument to build image." >> /dev/stderr
-  exit 2
+if [[ "$BUILD_VERSION" == *"SNAPSHOT"* ]]; then
+  echo "Releases will not be performed for snapshot versions, aborting."
+  exit 0
 fi
 
-dotnetversion=$1
-fdk_version=$2
+RUN_TYPE=${RUN_TYPE:-dry-run}
+export RUN_TYPE
 
-echo $dotnetversion
-pushd internal/images/build/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
-pushd internal/images/runtime/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version} . && popd
+# Deploying images to dockerhub
+if [ "${RUN_TYPE}" = "release" ]; then
+  # Release base fdk build and runtime images
+  echo "Deploying fdk dotnet build and runtime images to dockerhub."
+  set +x
+  echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+  set -x
+  ./internal/release/release_image.sh 3.1
+fi

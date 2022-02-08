@@ -1,4 +1,4 @@
 schema_version: 20180708
-name: timeout-fn
+name: oci-sdk-fn
 version: 1.0.0
 runtime: dotnet

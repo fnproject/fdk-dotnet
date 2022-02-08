@@ -15,17 +15,20 @@
 # limitations under the License.
 #
 
-
 set -xeuo pipefail
+set -ex
 
-if [[ -z ${1:-} ]];then
-  echo "Please supply dotnet version as argument to build image." >> /dev/stderr
+if [ -z "$1" ];then
+  echo "Please supply dotnet runtime version as argument to release image." >> /dev/stderr
   exit 2
 fi
 
+# Release base fdk build and runtime images
 dotnetversion=$1
-fdk_version=$2
+user="fnproject"
+image="dotnet"
 
-echo $dotnetversion
-pushd internal/images/build/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
-pushd internal/images/runtime/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version} . && popd
+echo "Pushing release images for dotnet Runtime Version ${dotnetversion}"
+
+docker push ${user}/${image}:${dotnetversion}-${BUILD_VERSION}
+docker push ${user}/${image}:${dotnetversion}-${BUILD_VERSION}-dev

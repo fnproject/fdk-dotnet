@@ -3,9 +3,9 @@ using System.Collections;
 
 namespace Fnproject.Fn.Fdk.Context
 {
-    internal class TracingContext : ITracingContext
+    sealed internal class TracingContext : ITracingContext
     {
-
+        internal static readonly string ENABLED_STRING = "1";
         private string traceCollectorURL;
         private string traceId;
         private string spanId;
@@ -56,7 +56,7 @@ namespace Fnproject.Fn.Fdk.Context
         public TracingContext(IDictionary config, IHeaderDictionary headers)
         {
             if (config.Contains(Constants.OCI_TRACING_ENABLED) &&
-                config[Constants.OCI_TRACING_ENABLED].ToString() == Constants.ENABLED_STRING)
+                config[Constants.OCI_TRACING_ENABLED].ToString() == ENABLED_STRING)
             {
                 tracingEnabled = true;
                 traceCollectorURL = config[Constants.OCI_TRACE_COLLECTOR_URL].ToString();
@@ -67,7 +67,7 @@ namespace Fnproject.Fn.Fdk.Context
                 serviceName = string.Format("{0}::{1}", config[Constants.FN_APP_NAME],
                     config[Constants.FN_FN_NAME]).ToLower();
 
-                if (headers[Constants.TRACING_SAMPLED_HEADER] == Constants.ENABLED_STRING)
+                if (headers[Constants.TRACING_SAMPLED_HEADER] == ENABLED_STRING)
                 {
                     sampled = true;
                 }

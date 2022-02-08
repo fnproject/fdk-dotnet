@@ -1,56 +1,63 @@
 namespace Fnproject.Fn.Fdk.Context
 {
+    /// <summary>
+    /// ITracingContext is the APM Tracing context passed by the service if tracing
+    /// is enabled for the function.
+    /// </summary>
     public interface ITracingContext
     {
-        /**
-         * Returns true if tracing is enabled for this function invocation
-         * @return whether tracing is enabled
-         */
+        /// <summary>
+        /// TracingEnabled returns true if tracing is enabled for this function invocation
+        /// </summary>
+        /// <returns><see cref="System.Bool"/> whether tracing is enabled</returns>
         bool TracingEnabled();
 
-        /**
-         * Returns the URL to be used in tracing libraries as the destination for
-         * the tracing data
-         * @return a string containing the trace collector URL
-         */
+        /// <summary>
+        /// TraceCollectorURL returns the URL to be used in tracing libraries as the destination for
+        /// the tracing data
+        /// </summary>
+        /// <returns><see cref="System.String"/> containing the trace collector URL</returns>
         string TraceCollectorURL();
 
-        /**
-         * Returns the current trace ID as extracted from Zipkin B3 headers if they
-         * are present on the request
-         * @return the trace ID as a string
-         */
+        /// <summary>
+        /// TraceId returns the current trace ID as extracted from Zipkin B3 headers if they
+        /// are present on the request
+        /// </summary>
+        /// <returns><see cref="System.String"/> containing the trace ID</returns>
         string TraceId();
 
-        /**
-         * Returns the current span ID as extracted from Zipkin B3 headers if they
-         * are present on the request
-         * @return the span ID as a string
-         */
+        /// <summary>
+        /// SpanId returns the current span ID as extracted from Zipkin B3 headers if they
+        /// are present on the request
+        /// </summary>
+        /// <returns><see cref="System.String"/> containing the span ID</returns>
         string SpanId();
 
-        /**
-         * Returns the parent span ID as extracted from Zipkin B3 headers if they
-         * are present on the request
-         * @return the parent span ID as a string
-         */
+        /// <summary>
+        /// ParentSpanId returns the parent span ID as extracted from Zipkin B3 headers if they
+        /// are present on the request
+        /// </summary>
+        /// <returns><see cref="System.String"/> containing the parent span ID</returns>
         string ParentSpanId();
 
-        /**
-         * Returns the value of the Sampled header of the Zipkin B3 headers if they
-         * are present on the request
-         * @return true if sampling is enabled for the request
-         */
+        /// <summary>
+        /// Sampled returns the value of the Sampled header of the Zipkin B3 headers if they
+        /// are present on the request
+        /// </summary>
+        /// <returns><see cref="System.Bool"/> whether sampling is enabled for the request</returns>
         bool Sampled();
-
-        /**
-         * Returns the value of the Flags header of the Zipkin B3 headers if they
-         * are present on the request
-         * @return the verbatim value of the X-B3-Flags header
-         */
+        
+        /// <summary>
+        /// Flags returns the value of the Flags header of the Zipkin B3 headers if they
+        /// are present on the request
+        /// </summary>
+        /// <returns><see cref="System.String"/> containing the verbatim value of the X-B3-Flags header</returns>
         string Flags();
 
-        // ServiceName is Config()["FN_APP_ID"] + Config()["FN_FN_Name"]
+        /// <summary>
+        /// ServiceName returns the name of the service
+        /// </summary>
+        /// <returns><see cref="System.String"/> containing the service name as app name + function name</returns>
         string ServiceName();
     }
 }

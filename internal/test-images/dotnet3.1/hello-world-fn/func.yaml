@@ -1,4 +1,4 @@
 schema_version: 20180708
-name: runtime-version-fn
+name: hello-world-fn
 version: 1.0.0
 runtime: dotnet

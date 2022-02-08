@@ -60,28 +60,30 @@ namespace Fnproject.Fn.Fdk
         {
             try
             {
-                var requestContext = new HTTPContext(context.Request.Headers, context.Request.Query);
+                RuntimeContext runtimeContext = new RuntimeContext(context.Request.Headers);
+                HTTPContext httpContext = new HTTPContext(runtimeContext,
+                    context.Request.Headers, context.Request.Query);
                 StreamReader reader = new StreamReader(context.Request.Body, encoding: System.Text.Encoding.UTF8);
                 var rawBodyString = await reader.ReadToEndAsync();
                 context.Request.Body.Close();
 
-                object[] args = prepareArgs(requestContext, rawBodyString);
+                object[] args = prepareArgs(httpContext, rawBodyString);
                 object result = Function.Invoke(args);
                 string responseBodyString = OutputCoercion.Coerce(result,
-                  Function.Method.ReturnType);
+                  result.GetType());
 
-                foreach (var entry in requestContext.ResponseHeaders())
-                    context.Response.Headers.Add(entry.Key, entry.Value);
+                foreach (var entry in httpContext.ResponseHeaders())
+                    context.Response.Headers[entry.Key] = entry.Value;
 
                 await context.Response.WriteAsync(responseBodyString);
             }
             catch (Exception e)
             {
-                context.Response.Headers.Add(Constants.FN_FDK_RUNTIME_HEADER,
-                    String.Format("dotnet/{0}", System.Environment.Version.ToString()));
-                context.Response.Headers.Add(Constants.FN_FDK_RUNTIME_HEADER,
-                    String.Format("fdk-dotnet/{0}", Version.Value));
-                context.Response.Headers.Add(Constants.FN_HTTP_STATUS_HEADER, 502.ToString());
+                context.Response.Headers[Constants.FN_FDK_RUNTIME_HEADER] =
+                    String.Format("dotnet/{0}", System.Environment.Version.ToString());
+                context.Response.Headers[Constants.FN_FDK_RUNTIME_HEADER] =
+                    String.Format("fdk-dotnet/{0}", Version.Value);
+                context.Response.Headers[Constants.FN_HTTP_STATUS_HEADER] = 502.ToString();
                 context.Response.StatusCode = StatusCodes.Status502BadGateway;
 
                 await context.Response.WriteAsync(string.Empty);

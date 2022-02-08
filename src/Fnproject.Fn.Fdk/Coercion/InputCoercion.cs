@@ -38,4 +38,3 @@ namespace Fnproject.Fn.Fdk.Coercion
         }
     }
 }
-

@@ -25,27 +25,32 @@ namespace Fnproject.Fn.Fdk.Context
         private IQueryCollection queryParams;
         private IHeaderDictionary responseHeaders;
 
-        public HTTPContext(IHeaderDictionary reqHeaders, IQueryCollection query)
+        public HTTPContext(IRuntimeContext runtimeCtx,
+            IHeaderDictionary reqHeaders, IQueryCollection query)
         {
-            headers = new HeaderDictionary();
-
-            foreach (string key in reqHeaders.Keys)
-            {
-                if (ALLOWED_RAW_HEADERS.Contains(key) ||
-                    key.ToLower() == HeaderNames.ContentType.ToLower())
-                {
-                    headers[key] = reqHeaders[key];
-                }
-                else if (key.StartsWith(Constants.FN_HTTP_HEADER_PREFIX))
-                {
-                    headers[key.Remove(0, Constants.FN_HTTP_HEADER_PREFIX.Length)] =
-                        reqHeaders[key];
-                }
-                reqHeaders.Remove(key);
-            }
-            runtimeContext = new RuntimeContext(headers);
-            responseHeaders = new HeaderDictionary();
+            this.headers = new HeaderDictionary();
+            this.runtimeContext = runtimeCtx;
+            this.responseHeaders = new HeaderDictionary();
             this.queryParams = query;
+
+            if (runtimeCtx.FnIntent() == string.Empty ||
+                runtimeCtx.FnIntent() == Constants.INTENT_HTTP_REQUEST)
+            {
+                foreach (string key in reqHeaders.Keys)
+                {
+                    if (ALLOWED_RAW_HEADERS.Contains(key) ||
+                        key.ToLower() == HeaderNames.ContentType.ToLower())
+                    {
+                        headers[key] = reqHeaders[key];
+                    }
+                    else if (key.StartsWith(Constants.FN_HTTP_HEADER_PREFIX))
+                    {
+                        headers[key.Remove(0, Constants.FN_HTTP_HEADER_PREFIX.Length)] =
+                            reqHeaders[key];
+                    }
+                    reqHeaders.Remove(key);
+                }
+            }
         }
 
         public IRuntimeContext RuntimeContext()

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fnproject.Fn.Fdk" Version="3.0.0-SNAPSHOT" />
+    <PackageReference Include="Fnproject.Fn.Fdk" Version="LATEST" />
     <PackageReference Include="OCI.DotNetSDK.Common" Version="30.3.0" />
     <PackageReference Include="OCI.DotNetSDK.Identity" Version="30.3.0" />
   </ItemGroup>

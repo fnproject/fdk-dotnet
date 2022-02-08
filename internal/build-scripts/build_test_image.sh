@@ -32,7 +32,8 @@ if [ -z "$2" ]; then
 fi
 
 fn_dir=$1
-dotnet_version=$2
+csproj_file_name=$2
+dotnet_version=$3
 pkg_version=${BUILD_VERSION}
 
 (
@@ -40,8 +41,7 @@ pkg_version=${BUILD_VERSION}
     #source internal/build-scripts/build_dist_pkg.sh $fn_dir
 
     cp -R ./internal/out/Fnproject.Fn.Fdk.${pkg_version}.nupkg ${fn_dir}/
-    sed -i".csproj" "s/LATEST/$pkg_version/g" "${fn_dir}/temporary.csproj" 
-    rm -rf ${fn_dir}/temporary.csproj.csproj
+    sed -i".bak" "s/LATEST/$pkg_version/g" "${fn_dir}/${csproj_file_name}.csproj"
 
     pushd ${fn_dir}
 
@@ -54,19 +54,20 @@ pkg_version=${BUILD_VERSION}
     image_identifier="${version}${dotnet_version}-${pkg_version}"
     echo "image_identifier:$image_identifier"
 
-    docker build -t fnproject/${name}:${image_identifier} -f Build_file --build-arg DOTNET_VERSION=${dotnet_version} --build-arg PKG_VERSION=${BUILD_VERSION} .
-    
+    docker build -t fnproject/${name}:${image_identifier} \
+        -f Build_file \
+        --build-arg DOTNET_VERSION=${dotnet_version} \
+        --build-arg PKG_VERSION=${pkg_version} .
     rm -rf Fnproject.Fn.Fdk.${pkg_version}.nupkg 
     
     popd
 
-    sed  -i".csproj" "s/$pkg_version/LATEST/g" "${fn_dir}/temporary.csproj"
-    rm -rf ${fn_dir}/temporary.csproj.csproj
+    sed -i".bak" "s/$pkg_version/LATEST/g" "${fn_dir}/${csproj_file_name}.csproj"
+    rm -rf ${fn_dir}/${csproj_file_name}.csproj.bak
 
     # Push to OCIR
     ocir_image="${OCIR_LOC}/${name}:${image_identifier}"
 
     docker image tag "fnproject/${name}:${image_identifier}" "${OCIR_REGION}/${ocir_image}"
     docker image push "${OCIR_REGION}/${ocir_image}"
-    
 )

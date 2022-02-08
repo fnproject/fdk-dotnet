@@ -44,4 +44,3 @@ test images of functions and pushes them to OCIR.
         OR
     -   Edit Build Pull Request configuration in FAAS-FDK/fdk-dotnet teamcity project and enable build step - Cache dotnet docker hub images in artifactory
     
-    
