@@ -1,0 +1,7 @@
+^src/.*
+^tests/.*
+^THIRD_PARTY_LICENSES\.txt$
+^LICENSE$
+^README\.md$
+^Fnproject\.Fn\.Fdk\.sln$
+^\.gitignore$
