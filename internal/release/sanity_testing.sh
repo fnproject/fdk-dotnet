@@ -37,12 +37,11 @@ ls -al
 (
   # Execute unit tests
   docker build -t fdk_dotnet_test_build_image -f ./internal/docker-files/Dockerfile_unit_test .
-  docker run --rm fdk_dotnet_test_build_image ./internal/build-scripts/execute_unit_tests.sh
+  docker run --rm -v $(pwd):/build -w /build fdk_dotnet_test_build_image ./internal/build-scripts/execute_unit_tests.sh
 )
 
-
-# Remove the copied over internal folder for sanity testing
-rm -rf internal/
+# Remove the copied over internal folder for sanity testing. 
+docker run --rm -v $(pwd):/build -w /build fdk_dotnet_test_build_image rm -rf internal/
 
 # this step is to ensure we don't commit any files produced by unit test or build package to github branch
 git status
