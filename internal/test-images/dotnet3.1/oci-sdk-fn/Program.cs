@@ -22,7 +22,7 @@ namespace Function
             string result = "";
             try
             {
-                var provider = new ConfigFileAuthenticationDetailsProvider("DEFAULT");
+                var provider = ResourcePrincipalAuthenticationDetailsProvider.GetProvider();
 
                 var getCompartmentRequest = new Oci.IdentityService.Requests.GetCompartmentRequest
                 { CompartmentId = input.compartmentId };

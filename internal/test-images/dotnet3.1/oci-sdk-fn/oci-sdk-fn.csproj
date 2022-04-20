@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Fnproject.Fn.Fdk" Version="LATEST" />
-    <PackageReference Include="OCI.DotNetSDK.Common" Version="30.3.0" />
-    <PackageReference Include="OCI.DotNetSDK.Identity" Version="30.3.0" />
+    <PackageReference Include="OCI.DotNetSDK.Common" Version="36.0.0" />
+    <PackageReference Include="OCI.DotNetSDK.Identity" Version="36.0.0" />
   </ItemGroup>
 
 </Project>

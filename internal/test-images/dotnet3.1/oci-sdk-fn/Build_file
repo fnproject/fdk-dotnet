@@ -12,4 +12,4 @@ RUN dotnet build -o ./out -c Release
 FROM fnproject/dotnet:${DOTNET_VERSION}-${PKG_VERSION}
 WORKDIR /function
 COPY --from=build-stage /function/out .
-CMD ["dotnet", "oci-sdk-fn.dll", "Function:OCISDK:GetCompartmentId"]
+CMD ["dotnet", "oci-sdk-fn.dll", "Function:OCISDK:GetCompartmentID"]
