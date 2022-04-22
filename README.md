@@ -2,8 +2,6 @@
 
 This project contains an implementation of FDK for C# running on dotnet runtime.
 
-**This project is experimental and under active development.**
-
 ## Usage
 #### Add the project as a dependency from Nuget
 https://www.nuget.org/packages/Fnproject.Fn.Fdk/
