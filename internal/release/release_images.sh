@@ -32,4 +32,5 @@ if [ "${RUN_TYPE}" = "release" ]; then
   echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
   set -x
   ./internal/release/release_image.sh 3.1
+  ./internal/release/release_image.sh 6.0
 fi
