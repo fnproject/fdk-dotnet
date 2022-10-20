@@ -35,13 +35,19 @@ fn_dir=$1
 csproj_file_name=$2
 dotnet_version=$3
 pkg_version=${BUILD_VERSION}
+target_framework="netcoreapp3.1"
 
-(
+( 
     #Add the fdk related source code
     #source internal/build-scripts/build_dist_pkg.sh $fn_dir
 
     cp -R ./internal/out/Fnproject.Fn.Fdk.${pkg_version}.nupkg ${fn_dir}/
     sed -i".bak" "s/LATEST/$pkg_version/g" "${fn_dir}/${csproj_file_name}.csproj"
+    if [ $dotnet_version == "6.0" ]
+      then target_framework="net6.0"
+    fi
+
+    sed -i".bak" "s/TARGET/$target_framework/g" "${fn_dir}/${csproj_file_name}.csproj"
 
     pushd ${fn_dir}
 
@@ -57,12 +63,15 @@ pkg_version=${BUILD_VERSION}
     docker build -t fnproject/${name}:${image_identifier} \
         -f Build_file \
         --build-arg DOTNET_VERSION=${dotnet_version} \
+        --build-arg OCIR_REGION=${OCIR_REGION} \
+        --build-arg OCIR_LOC=${OCIR_LOC} \
         --build-arg PKG_VERSION=${pkg_version} .
-    rm -rf Fnproject.Fn.Fdk.${pkg_version}.nupkg 
-    
+    rm -rf Fnproject.Fn.Fdk.${pkg_version}.nupkg
+
     popd
 
     sed -i".bak" "s/$pkg_version/LATEST/g" "${fn_dir}/${csproj_file_name}.csproj"
+    sed -i".bak" "s/$target_framework/TARGET/g" "${fn_dir}/${csproj_file_name}.csproj"
     rm -rf ${fn_dir}/${csproj_file_name}.csproj.bak
 
     # Push to OCIR

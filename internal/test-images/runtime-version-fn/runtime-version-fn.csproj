@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>TARGET</TargetFramework>
     <RestoreSources>$(RestoreSources);./fdk-repo/;https://api.nuget.org/v3/index.json;</RestoreSources>
   </PropertyGroup>
 

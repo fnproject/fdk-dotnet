@@ -30,5 +30,5 @@ image="dotnet"
 
 echo "Pushing release images for dotnet Runtime Version ${dotnetversion}"
 
-docker push ${user}/${image}:${dotnetversion}-${BUILD_VERSION}
-docker push ${user}/${image}:${dotnetversion}-${BUILD_VERSION}-dev
+./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION}-dev ${user}/${image}:${dotnetversion}-${BUILD_VERSION}-dev
+./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION} ${user}/${image}:${dotnetversion}-${BUILD_VERSION}

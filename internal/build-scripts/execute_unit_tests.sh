@@ -5,5 +5,5 @@ dotnet --version
 
 (
   #run unit test cases
-  dotnet test
+  dotnet test -l "console;verbosity=normal"
 )

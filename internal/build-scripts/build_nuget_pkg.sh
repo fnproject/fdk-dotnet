@@ -17,7 +17,7 @@
 #
 
 #
-# This scripts add folders/filesrelated to fdk-go(that will be needed during test image build)
+# This scripts add folders/filesrelated to fdk-dotnet(that will be needed during test image build)
 #
 
 set -xe

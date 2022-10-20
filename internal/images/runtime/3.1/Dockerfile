@@ -1,4 +1,4 @@
-FROM oraclelinux:8-slim
+FROM --platform=linux/amd64 container-registry.oracle.com/os/oraclelinux:8-slim
 
 RUN microdnf install aspnetcore-runtime-3.1 && \
       microdnf clean all && \

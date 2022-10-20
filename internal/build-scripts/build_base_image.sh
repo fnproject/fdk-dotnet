@@ -26,6 +26,13 @@ fi
 dotnetversion=$1
 fdk_version=$2
 
+
 echo $dotnetversion
-pushd internal/images/build/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
-pushd internal/images/runtime/${dotnetversion} && docker build -t fnproject/dotnet:${dotnetversion}-${fdk_version} . && popd
+
+if [ $dotnetversion == "3.1" ]; then
+  pushd internal/images/build/${dotnetversion} && docker buildx build --push --platform linux/amd64 -t ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
+  pushd internal/images/runtime/${dotnetversion} && docker buildx build --push --platform linux/amd64 -t ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${fdk_version} . && popd
+else
+  pushd internal/images/build/${dotnetversion} && docker buildx build --push --platform linux/amd64,linux/arm64 -t ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${fdk_version}-dev . && popd
+  pushd internal/images/runtime/${dotnetversion} && docker buildx build --push --platform linux/amd64,linux/arm64 -t ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${fdk_version} . && popd
+fi

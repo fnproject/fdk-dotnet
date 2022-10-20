@@ -1,4 +1,4 @@
-FROM oraclelinux:8-slim
+FROM --platform=$TARGETPLATFORM container-registry.oracle.com/os/oraclelinux:8-slim
 
 RUN microdnf install aspnetcore-runtime-6.0 && \
       microdnf clean all && \
