@@ -27,8 +27,13 @@ fi
 dotnetversion=$1
 user="fnproject"
 image="dotnet"
+OCIR_REPO=iad.ocir.io/oraclefunctionsdevelopm
+ARTIFACTORY_REPO=odo-docker-signed-local.artifactory.oci.oraclecorp.com:443
 
 echo "Pushing release images for dotnet Runtime Version ${dotnetversion}"
 
-./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION}-dev ${user}/${image}:${dotnetversion}-${BUILD_VERSION}-dev
-./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION} ${user}/${image}:${dotnetversion}-${BUILD_VERSION}
+./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION}-dev ${OCIR_REPO}/${user}/${image}:${dotnetversion}-${BUILD_VERSION}-dev
+./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION}-dev ${ARTIFACTORY_REPO}/${user}/${image}:${dotnetversion}-${BUILD_VERSION}-dev
+
+./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION} ${OCIR_REPO}/${user}/${image}:${dotnetversion}-${BUILD_VERSION}
+./regctl image copy ${OCIR_REGION}/${OCIR_LOC}/dotnet:${dotnetversion}-${BUILD_VERSION} ${ARTIFACTORY_REPO}/${user}/${image}:${dotnetversion}-${BUILD_VERSION}
