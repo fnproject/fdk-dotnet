@@ -2,7 +2,7 @@ namespace Fnproject.Fn.Fdk
 {
     sealed class Version
     {
-        private static readonly string version = "1.0.12";
+        private static readonly string version = "1.0.13";
 
         private Version() { }
 
