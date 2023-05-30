@@ -36,6 +36,7 @@ csproj_file_name=$2
 dotnet_version=$3
 pkg_version=${BUILD_VERSION}
 target_framework="netcoreapp3.1"
+platform="linux/amd64,linux/arm64"
 
 ( 
     #Add the fdk related source code
@@ -60,7 +61,13 @@ target_framework="netcoreapp3.1"
     image_identifier="${version}${dotnet_version}-${pkg_version}"
     echo "image_identifier:$image_identifier"
 
-    docker build -t fnproject/${name}:${image_identifier} \
+    ocir_image="${OCIR_LOC}/${name}:${image_identifier}"
+
+    if [ $dotnet_version == "3.1" ]
+          then platform="linux/amd64"
+    fi
+
+    docker buildx build --push --platform ${platform} -t "${OCIR_REGION}/${ocir_image}" \
         -f Build_file \
         --build-arg DOTNET_VERSION=${dotnet_version} \
         --build-arg OCIR_REGION=${OCIR_REGION} \
@@ -73,10 +80,4 @@ target_framework="netcoreapp3.1"
     sed -i".bak" "s/$pkg_version/LATEST/g" "${fn_dir}/${csproj_file_name}.csproj"
     sed -i".bak" "s/$target_framework/TARGET/g" "${fn_dir}/${csproj_file_name}.csproj"
     rm -rf ${fn_dir}/${csproj_file_name}.csproj.bak
-
-    # Push to OCIR
-    ocir_image="${OCIR_LOC}/${name}:${image_identifier}"
-
-    docker image tag "fnproject/${name}:${image_identifier}" "${OCIR_REGION}/${ocir_image}"
-    docker image push "${OCIR_REGION}/${ocir_image}"
 )

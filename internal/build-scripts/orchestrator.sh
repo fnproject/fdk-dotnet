@@ -27,6 +27,9 @@ LOCAL=${LOCAL:-true}
 export BUILD_VERSION
 export LOCAL
 
+# Update buildx and prepare builderInstance
+./internal/build-scripts/init-buildx.sh
+
 #Build the nuget-package out of fdk-dotnet
 (
   docker build -t fdk_dotnet_build_image -f ./internal/docker-files/Dockerfile_build .
