@@ -1,7 +1,9 @@
 FROM container-registry.oracle.com/os/oraclelinux:8-slim
 
-RUN microdnf install aspnetcore-runtime-6.0 && \
-      microdnf install aspnetcore-runtime-3.1 && \
-      microdnf install dotnet-sdk-6.0 && \
-      microdnf clean all
-
+RUN microdnf install dotnet-sdk-8.0 && \
+    microdnf install dotnet-sdk-6.0 && \
+    microdnf install dotnet-sdk-3.1 && \
+    microdnf install aspnetcore-runtime-8.0 && \
+    microdnf install aspnetcore-runtime-6.0 && \
+    microdnf install aspnetcore-runtime-3.1 && \
+    microdnf clean all

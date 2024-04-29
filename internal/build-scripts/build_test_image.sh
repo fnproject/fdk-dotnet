@@ -48,6 +48,10 @@ platform="linux/amd64,linux/arm64"
       then target_framework="net6.0"
     fi
 
+    if [ $dotnet_version == "8.0" ]
+      then target_framework="net8.0"
+    fi
+
     sed -i".bak" "s/TARGET/$target_framework/g" "${fn_dir}/${csproj_file_name}.csproj"
 
     pushd ${fn_dir}
@@ -64,6 +68,10 @@ platform="linux/amd64,linux/arm64"
     ocir_image="${OCIR_LOC}/${name}:${image_identifier}"
 
     if [ $dotnet_version == "3.1" ]
+          then platform="linux/amd64"
+    fi
+
+    if [ $dotnet_version == "8.0" ]
           then platform="linux/amd64"
     fi
 

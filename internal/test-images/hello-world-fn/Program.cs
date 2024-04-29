@@ -17,7 +17,7 @@ namespace Function
         public Output helloWorld(Input input)
         {
             Output res = new Output();
-            res.message = string.Format("Hello {0}", input.name.Length == 0
+            res.message = string.Format("Hello {0}", input != null && input.name.Length == 0
                 ? "World" : input.name.Trim());
             return res;
         }

@@ -9,7 +9,7 @@ WORKDIR /function
 COPY . .
 RUN mkdir ./fdk-repo/
 RUN mv Fnproject.Fn.Fdk.${PKG_VERSION}.nupkg ./fdk-repo/
-RUN dotnet build -o ./out -c Release
+RUN dotnet build -o ./out -c Release -v n
 
 FROM ${OCIR_REGION}/${OCIR_LOC}/dotnet:${DOTNET_VERSION}-${PKG_VERSION}
 WORKDIR /function

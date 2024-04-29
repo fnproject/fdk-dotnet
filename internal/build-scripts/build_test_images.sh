@@ -22,3 +22,11 @@ echo ${OCIR_PASSWORD} | docker login --username "${OCIR_USERNAME}" --password-st
   source internal/build-scripts/build_test_image.sh internal/test-images/oci-sdk-fn oci-sdk-fn 6.0
   source internal/build-scripts/build_test_image.sh internal/test-images/runtime-version-fn runtime-version-fn 6.0
 )
+
+# dotnet 8
+(
+  source internal/build-scripts/build_test_image.sh internal/test-images/hello-world-fn hello-world-fn 8.0
+  source internal/build-scripts/build_test_image.sh internal/test-images/timeout-fn timeout-fn 8.0
+  source internal/build-scripts/build_test_image.sh internal/test-images/oci-sdk-fn oci-sdk-fn 8.0
+  source internal/build-scripts/build_test_image.sh internal/test-images/runtime-version-fn runtime-version-fn 8.0
+)

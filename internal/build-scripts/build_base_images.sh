@@ -7,3 +7,4 @@ echo ${OCIR_PASSWORD} | docker login --username "${OCIR_USERNAME}" --password-st
 
 ./internal/build-scripts/build_base_image.sh 3.1 $fdkVersion
 ./internal/build-scripts/build_base_image.sh 6.0 $fdkVersion
+./internal/build-scripts/build_base_image.sh 8.0 $fdkVersion
