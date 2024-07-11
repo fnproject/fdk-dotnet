@@ -1,0 +1,15 @@
+ARG BUILD_IMAGE_VERSION=BUILD_IMAGE_VERSION
+ARG RUNTIME_IMAGE_VERSION=RUNTIME_IMAGE_VERSION
+
+FROM odo-docker-signed-local.artifactory.oci.oraclecorp.com/fdk-dotnet:${BUILD_IMAGE_VERSION} as build-stage
+ARG FDK_VERSION=FDK_VERSION
+WORKDIR /function
+COPY . .
+RUN mkdir ./fdk-repo/
+RUN mv Fnproject.Fn.Fdk.${FDK_VERSION}.nupkg ./fdk-repo/
+RUN dotnet build -o ./out -c Release -v n
+
+FROM odo-docker-signed-local.artifactory.oci.oraclecorp.com/fdk-dotnet:${RUNTIME_IMAGE_VERSION}
+WORKDIR /function
+COPY --from=build-stage /function/out .
+CMD ["dotnet", "hello-world-fn.dll", "Function:Greeter:helloWorld"]

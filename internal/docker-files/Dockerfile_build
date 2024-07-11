@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/os/oraclelinux:8-slim
+FROM ocr-docker-remote.artifactory.oci.oraclecorp.com/os/oraclelinux:8-slim
 
 RUN set -eux; microdnf -y update;
 

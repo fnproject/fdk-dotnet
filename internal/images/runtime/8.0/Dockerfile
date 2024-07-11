@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM container-registry.oracle.com/os/oraclelinux:8-slim
+FROM --platform=linux/amd64 ocr-docker-remote.artifactory.oci.oraclecorp.com/os/oraclelinux:8-slim
 
 RUN set -eux; microdnf -y update;
 RUN microdnf install aspnetcore-runtime-8.0 && \
