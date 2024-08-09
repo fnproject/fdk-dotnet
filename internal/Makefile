@@ -1,5 +1,5 @@
 RAW_VERSION=$(shell grep 'private static readonly string version' ./src/Fnproject.Fn.Fdk/Version.cs | cut -d '"' -f 2)
-FDK_VERSION=$(RAW_VERSION)$(if $(BLD_BRANCH_SUFFIX),.$(BLD_NUMBER)$(BLD_BRANCH_SUFFIX),)
+FDK_VERSION=$(RAW_VERSION).$(BLD_NUMBER)$(BLD_BRANCH_SUFFIX)
 ifeq ($(DOTNET_VERSION), 3.1)
 FRAMEWORK_VERSION=netcoreapp3.1
 else ifeq ($(DOTNET_VERSION), 6.0)
@@ -12,6 +12,7 @@ endif
 
 set_fdk_version:
 	echo "version: \"$(FDK_VERSION)\"" > $(BLD_INPUT_DIR)/buildOverrideVariables.conf
+	echo "fdk_version=$(FDK_VERSION)" >> $(BLD_INPUT_DIR)/exportVariables.env
 
 set_image_version:
 	echo "version: \"$(DOTNET_VERSION)-$(FDK_VERSION)$(if $(VERSION_SUFFIX),-$(VERSION_SUFFIX),)\"" > $(BLD_INPUT_DIR)/buildOverrideVariables.conf
