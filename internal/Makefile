@@ -1,5 +1,11 @@
 RAW_VERSION=$(shell grep 'private static readonly string version' ./src/Fnproject.Fn.Fdk/Version.cs | cut -d '"' -f 2)
+
+ifeq ($(RELEASE), true)
+FDK_VERSION=$(RAW_VERSION)
+else
 FDK_VERSION=$(RAW_VERSION).$(BLD_NUMBER)$(BLD_BRANCH_SUFFIX)
+endif
+
 ifeq ($(DOTNET_VERSION), 3.1)
 FRAMEWORK_VERSION=netcoreapp3.1
 else ifeq ($(DOTNET_VERSION), 6.0)
