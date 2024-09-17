@@ -6,8 +6,11 @@ failImmediatelyOnError: true
 timeoutInSeconds: 36000
 
 env:
-  vaultVariables:
-    FDK_CONFIG_PRIVATE_KEY: ocid1.vaultsecret.oc1.phx.amaaaaaaepf6idiavyptfi77vodnqoese5u5sa5jl52ksdraty7s4ch2vtnq
+  variables:
+      REGION: us-ashburn-1
+      STAGE: pipeline
+      OCIR_LOC: "oraclefunctionsdevelopm/test-functions"
+      OCIR_REGION: "iad.ocir.io"
 
 inputArtifacts:
   - name: downloadDockerCredentialHelper
@@ -79,77 +82,41 @@ steps:
       copy_image timeout-fn 8.0
 
   - type: shell
-    name: Setup User
-    command: |
-      if [[ "${RELEASE:-false}" == false ]]; then
-        echo ${FDK_CONFIG_FILE_CONTENTS} | tr ' ' $'\n' | tee /tmp/config_fdk
-        echo "${FDK_CONFIG_PRIVATE_KEY}" > /tmp/oci_api_key_fdk.pem
-        ls -al /tmp/config_fdk /tmp/oci_api_key_fdk.pem
-      fi
-
-  - type: shell
     name: Run Integration Test Dotnet 3.1
     command: |
-      if [[ "${RELEASE:-false}" == false ]]; then
-        mkdir -p integration_test_dotnet3.1
-        cd integration_test_dotnet3.1
-        tar zxvf ${OCI_WORKSPACE_DIR}/input/fdk-integration-test-${FDK_INTEGRATION_TEST_VERSION}.tar.gz .
+      mkdir -p integration_test_dotnet3.1
+      cd integration_test_dotnet3.1
+      tar zxvf ${OCI_WORKSPACE_DIR}/input/fdk-integration-test-${FDK_INTEGRATION_TEST_VERSION}.tar.gz .
 
-        CLASSPATH=$(echo *.jar | tr ' ' ':')
-        export AUTH_CONF_FILE_PATH=/tmp/config_fdk
-        export REGION=us-ashburn-1
-        export STAGE=teamcity
-        export BUILD_VERSION=${FDK_VERSION}
-        export OCIR_LOC="oraclefunctionsdevelopm/test-functions"
-        export OCIR_REGION="iad.ocir.io"
-
-        export FDK_RUNTIME=dotnet3.1
-        export test=FunctionsIntegrationTest,RuntimeVersionIntegrationTest,OciSdkUsageIntegrationTest
-        java -jar junit-platform-console-standalone.jar -cp "$CLASSPATH" --scan-class-path
-      fi
+      CLASSPATH=$(echo *.jar | tr ' ' ':')
+      export FDK_RUNTIME=dotnet3.1
+      export test=FunctionsIntegrationTest,RuntimeVersionIntegrationTest,OciSdkUsageIntegrationTest
+      java -jar junit-platform-console-standalone.jar -cp "$CLASSPATH" --scan-class-path
 
   - type: shell
     name: Run Integration Test Dotnet 6.0
     command: |
-      if [[ "${RELEASE:-false}" == false ]]; then
-        mkdir -p integration_test_dotnet6.0
-        cd integration_test_dotnet6.0
-        tar zxvf ${OCI_WORKSPACE_DIR}/input/fdk-integration-test-${FDK_INTEGRATION_TEST_VERSION}.tar.gz .
+      mkdir -p integration_test_dotnet6.0
+      cd integration_test_dotnet6.0
+      tar zxvf ${OCI_WORKSPACE_DIR}/input/fdk-integration-test-${FDK_INTEGRATION_TEST_VERSION}.tar.gz .
 
-        CLASSPATH=$(echo *.jar | tr ' ' ':')
-        export AUTH_CONF_FILE_PATH=/tmp/config_fdk
-        export REGION=us-ashburn-1
-        export STAGE=teamcity
-        export MULTI_ARCH_ENABLED=True
-        export BUILD_VERSION=${FDK_VERSION}
-        export OCIR_LOC="oraclefunctionsdevelopm/test-functions"
-        export OCIR_REGION="iad.ocir.io"
-
-        export FDK_RUNTIME=dotnet6.0
-        export test=FunctionsIntegrationTest,RuntimeVersionIntegrationTest,OciSdkUsageIntegrationTest
-        java -jar junit-platform-console-standalone.jar -cp "$CLASSPATH" --scan-class-path
-      fi
+      CLASSPATH=$(echo *.jar | tr ' ' ':')
+      export MULTI_ARCH_ENABLED=True
+      export FDK_RUNTIME=dotnet6.0
+      export test=FunctionsIntegrationTest,RuntimeVersionIntegrationTest,OciSdkUsageIntegrationTest
+      java -jar junit-platform-console-standalone.jar -cp "$CLASSPATH" --scan-class-path
 
   - type: shell
     name: Run Integration Test Dotnet 8.0
     command: |
-      if [[ "${RELEASE:-false}" == false ]]; then
-        mkdir -p integration_test_dotnet8.0
-        cd integration_test_dotnet8.0
-        tar zxvf ${OCI_WORKSPACE_DIR}/input/fdk-integration-test-${FDK_INTEGRATION_TEST_VERSION}.tar.gz .
+      mkdir -p integration_test_dotnet8.0
+      cd integration_test_dotnet8.0
+      tar zxvf ${OCI_WORKSPACE_DIR}/input/fdk-integration-test-${FDK_INTEGRATION_TEST_VERSION}.tar.gz .
 
-        CLASSPATH=$(echo *.jar | tr ' ' ':')
-        export AUTH_CONF_FILE_PATH=/tmp/config_fdk
-        export REGION=us-ashburn-1
-        export STAGE=teamcity
-        export BUILD_VERSION=${FDK_VERSION}
-        export OCIR_LOC="oraclefunctionsdevelopm/test-functions"
-        export OCIR_REGION="iad.ocir.io"
-
-        export FDK_RUNTIME=dotnet8.0
-        export test=FunctionsIntegrationTest,RuntimeVersionIntegrationTest,OciSdkUsageIntegrationTest
-        java -jar junit-platform-console-standalone.jar -cp "$CLASSPATH" --scan-class-path
-      fi
+      CLASSPATH=$(echo *.jar | tr ' ' ':')
+      export FDK_RUNTIME=dotnet8.0
+      export test=FunctionsIntegrationTest,RuntimeVersionIntegrationTest,OciSdkUsageIntegrationTest
+      java -jar junit-platform-console-standalone.jar -cp "$CLASSPATH" --scan-class-path
     
   - type: shell
     name: Publish images to public OCIR (Release Only)
