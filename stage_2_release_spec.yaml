@@ -24,7 +24,7 @@ steps:
       yum install dotnet
 
       curl https://artifactory.oci.oraclecorp.com/faas-release-generic-local/fdk-dotnet/Fnproject.Fn.Fdk.${FDK_VERSION}.nupkg -o Fnproject.Fn.Fdk.${FDK_VERSION}.nupkg
-      dotnet nuget push Fnproject.Fn.Fdk.${BUILD_VERSION}.nupkg --api-key ${NUGET_PKG_API_KEY} --source https://api.nuget.org/v3/index.json
+      dotnet nuget push Fnproject.Fn.Fdk.${FDK_VERSION}.nupkg --api-key ${NUGET_PKG_API_KEY} --source https://api.nuget.org/v3/index.json
 
   - type: Command
     name: Publish to internal github
