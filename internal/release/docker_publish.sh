@@ -2,7 +2,7 @@
 
 set -eu
 
-REGCTL_BIN=/Users/jkumavat/regctl
+REGCTL_BIN=regctl
 # Test regctl is on path
 $REGCTL_BIN --help
 
