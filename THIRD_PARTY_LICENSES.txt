@@ -20,7 +20,7 @@ License: A copy of the Apache License V2 is included at the end of this file.
 
 --------------------------------------------------------------------------------
 
-Packages imported from the ASP Dotnet Core 3.1 library:
+Packages imported from the ASP.NET Core framework:
 
 Mono.Posix
 License: MIT License

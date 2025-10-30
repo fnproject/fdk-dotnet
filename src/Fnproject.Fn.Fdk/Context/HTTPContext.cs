@@ -73,7 +73,7 @@ namespace Fnproject.Fn.Fdk.Context
         }
         public string GetHeaderByKey(string key)
         {
-            return headers[key].Count == 0 ? string.Empty : string.Join(';', headers[key]);
+            return headers[key].Count == 0 ? string.Empty : string.Join(";", headers[key].ToArray());
         }
         public IQueryCollection Query()
         {
