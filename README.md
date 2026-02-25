@@ -26,7 +26,7 @@ namespace example
     }
 }
 ```
-While caliing the function, pass `namespace:class:function` as arguments to the binary.
+While calling the function, pass `namespace:class:function` as arguments to the binary.
 To run the above example, use `dotnet func.dll example:Program:userFunc`.
 
 #### Handle other content types
