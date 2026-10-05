@@ -207,6 +207,8 @@ PublishScripts/
 
 # Nuget personal access tokens and Credentials
 nuget.config
+# Keep the repository package-source configuration; it contains no credentials.
+!NuGet.Config
 
 # Microsoft Azure Build Output
 csx/
